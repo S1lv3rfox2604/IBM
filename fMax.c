@@ -4,22 +4,25 @@
 #include <string.h>
 #include <ctype.h> // Для функции isdigit
 
-int main()
+int main(void)
 {
-    const char *file_path = "numbers_word2.txt";
-    FILE *file = fopen(file_path, "r");
-    if (file == NULL)
-    {
-        printf("Open error.\n");
-        return 1;
-    }
     int max_value = INT_MIN;
     int current_value;
     int has_numbers = 0;
     char current_str[20];
+    const char *file_path = "numbers_word2.txt";
+
+    FILE *file = fopen(file_path, "r");
+
+    if (file == NULL)
+    {
+        printf("Open error.\n");
+        return -1;
+    }
+
     while (fscanf(file, "%s", current_str) == 1)
     {
-        int is_number = 1;
+        int is_number = 1; // предполагаем, что в current_str число
         for (int i = 0; current_str[i] != '\0'; i++)
         {
             if (!isdigit(current_str[i]) && !(i == 0 && current_str[i] == '-')) // Проверка на отрицательное число
@@ -31,8 +34,8 @@ int main()
 
         if (!is_number)
         {
-            printf("Error: invalid sintacsis.\n");
-            return 0;
+            printf("Error: invalid syntax.\n");
+            return -1;
         }
 
         current_value = atoi(current_str);
@@ -41,7 +44,7 @@ int main()
         {
             printf("Error: out of interval\n");
             fclose(file);
-            return 0;
+            return -1;
         }
 
         if (current_value > max_value)
@@ -61,5 +64,5 @@ int main()
     }
 
     fclose(file);
-    return 0;
+    return -1;
 }
